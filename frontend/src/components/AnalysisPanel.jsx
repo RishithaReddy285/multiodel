@@ -10,7 +10,7 @@ const TABS = [
 ];
 
 function AnalysisPanel({ analysis, isLoading }) {
-  const [activeTab, setActiveTab] = [useState('summary')[0], useState('summary')[1]];
+  const [activeTab, setActiveTab] = useState('summary');
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {

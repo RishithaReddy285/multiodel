@@ -1,0 +1,100 @@
+.uploader-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.uploader-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--panel-border);
+  background: rgba(0, 0, 0, 0.2);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.drag-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 24px;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.drag-area:hover, .drag-area.active {
+  border-color: var(--accent);
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.drag-area.has-file {
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.file-input {
+  display: none;
+}
+
+.drag-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.file-icon-wrapper {
+  color: var(--accent);
+  margin-bottom: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 50%;
+}
+
+.drag-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.drag-content p {
+  color: var(--text-secondary);
+}
+
+.file-types {
+  font-size: 12px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  margin-top: 8px;
+}
+
+.file-info h4 {
+  font-size: 18px;
+  color: var(--text-primary);
+  word-break: break-all;
+  padding: 0 16px;
+}
+
+.uploader-footer {
+  padding: 12px 16px;
+  border-top: 1px solid var(--panel-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import CodeEditor from './components/CodeEditor';
+import DocumentUploader from './components/DocumentUploader';
 import AnalysisPanel from './components/AnalysisPanel';
 import HistoryPanel from './components/HistoryPanel';
 import './App.css';
@@ -9,8 +9,6 @@ import { Bot } from 'lucide-react';
 const API_BASE = 'http://localhost:5000/api';
 
 function App() {
-  const [code, setCode] = useState('');
-  const [language, setLanguage] = useState('');
   const [analysis, setAnalysis] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [history, setHistory] = useState([]);
@@ -28,25 +26,26 @@ function App() {
     }
   };
 
-  const handleAnalyze = async (newCode, newLanguage) => {
-    setCode(newCode);
-    setLanguage(newLanguage);
+  const handleAnalyze = async (file) => {
     setIsLoading(true);
     setAnalysis(null);
     
+    const formData = new FormData();
+    formData.append('file', file);
+
     try {
-      const res = await axios.post(`${API_BASE}/analyze`, {
-        code: newCode,
-        language: newLanguage
+      const res = await axios.post(`${API_BASE}/upload-analyze`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
       setAnalysis(res.data.analysis);
-      // Refresh history after analysis
       setTimeout(fetchHistory, 1000);
     } catch (err) {
       console.error('Analysis failed', err);
       setAnalysis({
         summary: 'Error',
-        explanation: 'Failed to analyze code. Make sure backend and ChromaDB are running.',
+        explanation: 'Failed to analyze document. ' + (err.response?.data?.error || err.message),
         issues: [],
         suggestions: []
       });
@@ -56,8 +55,6 @@ function App() {
   };
 
   const loadFromHistory = (item) => {
-    setCode(item.metadata.code || '');
-    setLanguage(item.metadata.language || '');
     setAnalysis({
       summary: item.metadata.summary,
       explanation: item.metadata.explanation,
@@ -72,15 +69,13 @@ function App() {
       
       <div className="main-content">
         <header>
-          <h1><Bot style={{marginRight: 8, verticalAlign: 'middle'}}/> Multimodel Analyzer</h1>
+          <h1><Bot style={{marginRight: 8, verticalAlign: 'middle'}}/> Multimodal Analyzer</h1>
         </header>
 
         <div className="editor-analysis-grid">
-          <CodeEditor 
+          <DocumentUploader 
             onAnalyze={handleAnalyze} 
             isLoading={isLoading}
-            initialCode={code}
-            initialLanguage={language}
           />
           <AnalysisPanel analysis={analysis} isLoading={isLoading} />
         </div>
